@@ -53,7 +53,21 @@ userInput(UserID)
 
 // TODO: Create a function that uses template literals for HTML generation
 
+function HelloSite ()
+{
+    const Hello = 
+    `<!doctype html>
+  <html lang="en-US">
+    <head>
+      <title>Hello</title>
+    </head>
+    <body>
+      <h1>Hello world!</h1>
+    </body>
+  </html>`;
 
+  return Hello
+}
 
 // TODO: Create a Promise that simulates fetching user posts
 // - Should resolve after 1 second
