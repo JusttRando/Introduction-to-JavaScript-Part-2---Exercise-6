@@ -1,14 +1,6 @@
 // ===============================================
 // TODO 1: Promise that simulates fetching user data
 // ===============================================
-
-// TODO: Create a Promise that simulates fetching user posts
-// - Should resolve after 1 second
-// - Return an array of post objects
-// - Each post should have: id, title, content, and userId
-// - If userId doesn't exist, reject with error
-
-
 function grabData(userId) 
 {
     return new Promise((info, error) => 
@@ -74,8 +66,8 @@ function PostsNsocials(userId)
             if (userId > 0) 
                 {
                 post([
-                    { id: 67, title: "Lava challange", content: "burn your face", userId },
-                    { id: 420, title: "Rick Roll", content: "Never gonna give you up", userId }
+                    { id: 1, title: "Lava challange", content: "burn your face", userId },
+                    { id: 2, title: "Rick Roll", content: "Never gonna give you up", userId }
                 ]);
                 } else
                     {
@@ -90,18 +82,12 @@ function PostsNsocials(userId)
 // ===============================================
 // TODO 3: Function that chains Promises
 // ===============================================
-
-// TODO: Create a function that chains multiple Promises together
-// - First fetch user data
-// - Then fetch their posts
-// - Combine the data into a single object
-// - Handle any errors that occur in the chain
-function linkedPost(userId) 
+function getUserAndPosts_Chain(userId) 
 {
-    return grabData(userId)
+    return fetchUserData(userId)
         .then(user => 
             {
-            return PostsNsocials(user.id)
+            return fetchUserPosts(user.id)
                 .then(posts => 
                     {
                     return { user, posts };
@@ -115,19 +101,13 @@ function linkedPost(userId)
 // ===============================================
 // TODO 4: Convert the chain into async/await
 // ===============================================
-
-// TODO: Convert the above Promise chain to use async/await
-// - Use try/catch for error handling
-// - Log each step of the process
-// - Return combined user and posts data
-
 async function getUserAndPosts_Async(userId) {
     try {
         console.log("Fetching user...");
-        const user = await grabData(userId);
+        const user = await fetchUserData(userId);
 
         console.log("Fetching posts...");
-        const posts = await PostsNsocials(user.id);
+        const posts = await fetchUserPosts(user.id);
 
         console.log("All data fetched!");
         return { user, posts };
@@ -141,16 +121,9 @@ async function getUserAndPosts_Async(userId) {
 // ===============================================
 // TODO 5: Fetch multiple users in parallel
 // ===============================================
-
-// TODO: Create a function that fetches multiple users in parallel
-// - Take an array of userIds
-// - Fetch all users simultaneously using Promise.all
-// - Handle errors for individual user fetches
-// - Return array of successfully fetched users
-
 async function fetchMultipleUsers(userIds) {
     const promises = userIds.map(id =>
-        grabData(id)
+        fetchUserData(id)
             .catch(err => {
                 console.error("Failed to fetch user:", id, err.message);
                 return null; // keep results array intact
@@ -167,19 +140,12 @@ async function fetchMultipleUsers(userIds) {
 // ===============================================
 // TODO 6: Fetch users and posts in parallel
 // ===============================================
-
-// TODO: Create a function that fetches users and their posts in parallel
-// - Fetch user data for multiple users
-// - Once user data is received, fetch all their posts in parallel
-// - Combine user and posts data
-// - Handle errors appropriately
-
 async function fetchUsersAndPosts(userIds) {
     try {
         const users = await fetchMultipleUsers(userIds);
 
         const postPromises = users.map(u =>
-            linkedPost(u.id).catch(() => [])
+            fetchUserPosts(u.id).catch(() => [])
         );
 
         const posts = await Promise.all(postPromises);
@@ -200,11 +166,6 @@ async function fetchUsersAndPosts(userIds) {
 // TODO 7: Test success cases
 // ===============================================
 
-// TODO: Test success cases
-// - Test single user fetch
-// - Test multiple user fetch
-// - Test error handling
-
 console.log("\n=== Test: Single User ===");
 getUserAndPosts_Async(1).then(data => console.log(data));
 
@@ -217,7 +178,7 @@ fetchUsersAndPosts([1, 2, 3]).then(data => console.log(data));
 
 // Create a Promise
 const myPromise1 = new Promise((resolve, reject) => {
-  setTimeout(resolve, 1000, "King");
+  setTimeout(resolve, 200, "King");
 });
 
 // Create another Promise
@@ -229,43 +190,3 @@ const myPromise2 = new Promise((resolve, reject) => {
 Promise.all([myPromise1, myPromise2]).then((x) => {
   myDisplay(x);
 });
-
-
-        }
-        else
-        {
-            throw new Error("Enter number ID please")
-        }
-    }
-    catch(e)
-    {
-        console.log(e)
-    }
-}
-
-userInput(UserID)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
